@@ -17,11 +17,13 @@ class Home extends CI_Controller{
        $this->commanView($this->data);
     }
 
-    public function category(){
+    public function category($id){
+        $this->data['product'] = $this->datawork->calling("category",["id"=>$id]);
         $this->commanView($this->data);
     }
 
-    public function product(){
+    public function product($id){
+        $this->data['product'] = $this->db->where(["id"=>$id])->get("items")->row();
         $this->load->view('public/header');
         $this->load->view('public/product',$this->data);
         $this->load->view('public/footer');

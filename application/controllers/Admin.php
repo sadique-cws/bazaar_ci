@@ -38,6 +38,16 @@ class Admin extends CI_Controller{
 
 
         if($this->form_validation->run()){
+
+            $config['upload_path']          = './assets/';
+            $config['allowed_types']        = 'gif|jpg|png';
+
+            $this->load->library("upload",$config);
+
+            if(!$this->upload->do_upload("image")){
+                $this->data['error '] = $this->upload->display_errors();
+            }
+            else{
                 $data = [
                     'title' => $_POST['title'],
                     'price' => $_POST['price'],
@@ -48,8 +58,10 @@ class Admin extends CI_Controller{
                     'image' => $_FILES['image']['name'],
                     'description' => $_POST['description']
                 ];
+
                 $this->db->insert("items",$data);
                 redirect('admin/index');
+            }
         }
         else{
             $this->load->view('admin/header');
