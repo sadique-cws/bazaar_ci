@@ -34,6 +34,16 @@
       <li class="nav-item">
         <a class="nav-link active" href="#" tabindex="-1" aria-disabled="true">Carts <sup><span class="badge badge-danger badge-pill">0</span></sup></a>
       </li>
+      <?php if($this->session->userdata('admin')):?>
+      <li class="nav-item">
+        <a class="btn btn-danger" href="<?= base_url('auth/logout');?>" tabindex="-1" aria-disabled="true">Logout</a>
+      </li>
+      <?php else: ?>
+        <li class="nav-item">
+          <a class="btn btn-danger" href="<?= base_url('auth/login');?>" tabindex="-1" aria-disabled="true">Login</a>
+        </li>
+        
+      <?php endif;?>
     </ul>
     
   </div>

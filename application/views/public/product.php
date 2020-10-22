@@ -17,7 +17,8 @@
                                 <h2 class="lead"><?= $product->title;?></h2>
                                 <p class="small"><?= $product->category;?></p>
                                 <h2>Rs. <?= $product->discount_price;?> <small><del><?= $product->price;?>/-</del></small></h2>
-                         </div>
+                                <a href="<?= base_url('user/addToCart/'.$product->id);?>" class="btn btn-success">Add To cart</a>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -14,6 +14,20 @@ class Datawork extends CI_Model {
     }
 
     
+    public function checkdata($table,$cond=null){
+       
+        $data =  $this->db->where($cond)->get($table);
+
+        $result = $data->num_rows();
+        if($result > 0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    
 
 }
 
