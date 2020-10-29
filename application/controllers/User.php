@@ -9,7 +9,16 @@ class User extends CI_Controller{
     }
 
     public function cart(){
-        echo "this is cart";
+        $log = $this->session->userdata('admin');
+
+        $user = $this->db->where('contact',$log)->get('account')->row();
+
+        $order = $this->db->get_where('orders',['user_id'=>$user->id,'ordered'=>false])->row();
+        $data['orderitem'] = $this->db->get_where('orderitem',['order_id'=>$order->order_id])->result(); 
+        
+        $this->load->view('public/header');
+        $this->load->view('public/cart',$data);
+        $this->load->view('public/footer');
     }
 
     public function addToCart($item_id=null){

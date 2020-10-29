@@ -20,6 +20,8 @@ class Auth extends CI_Controller{
             }
             else{
                 echo "<script>alert('username and password ')</script>";
+                redirect("auth/login");
+
             }
         }
         else{
