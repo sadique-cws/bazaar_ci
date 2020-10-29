@@ -14,7 +14,7 @@ class User extends CI_Controller{
         $user = $this->db->where('contact',$log)->get('account')->row();
 
         $order = $this->db->get_where('orders',['user_id'=>$user->id,'ordered'=>false])->row();
-        $data['orderitem'] = $this->db->get_where('orderitem',['order_id'=>$order->order_id])->result(); 
+        $data['orderitem'] = $this->db->select("*")->from('orderitem')->join('items','orderitem.item_id=items.id')->get()->result(); 
         
         $this->load->view('public/header');
         $this->load->view('public/cart',$data);
@@ -51,7 +51,7 @@ class User extends CI_Controller{
                     $orderitem = $this->db->insert("orderitem",["ordered"=>false,"user_id"=>$user->id,"order_id"=>$last_id,'item_id'=>$item_id]);
 
                 }
-               // redirect("user/cart");
+               redirect("user/cart");
             }
         }
     }
