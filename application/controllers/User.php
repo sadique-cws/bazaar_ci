@@ -13,9 +13,13 @@ class User extends CI_Controller{
 
         $user = $this->db->where('contact',$log)->get('account')->row();
 
-        $order = $this->db->get_where('orders',['user_id'=>$user->id,'ordered'=>false])->row();
-        $data['orderitem'] = $this->db->select("*")->from('orderitem')->join('items','orderitem.item_id=items.id')->get()->result(); 
+        // $order = $this->db->get_where('orders',['user_id'=>$user->id,'ordered'=>false])->row();
+        $order = $this->db->select('*')->from('orders')->join('coupons','orders.coupon=coupons.id')->where(['user_id'=>$user->id,'ordered'=>false])->get();
+        $order = $order->result();
+        //select * from orders JOIN coupons ON orders.coupon = coupons.id WHERE user_id='' AND ordered=false
         
+        $data['orderitem'] = $this->db->select("*")->from('orderitem')->join('items','orderitem.item_id=items.id','left')->get()->result(); 
+        $data['order'] = $order;
         $this->load->view('public/header');
         $this->load->view('public/cart',$data);
         $this->load->view('public/footer');
@@ -54,6 +58,31 @@ class User extends CI_Controller{
                redirect("user/cart");
             }
         }
+    }
+
+    
+
+    public function addCoupon(){
+        $log = $this->session->userdata('admin');
+        $user = $this->db->where('contact',$log)->get('account')->row();
+
+        $this->form_validation->set_rules('code','code','required');
+
+
+        if($this->form_validation->run()){
+             $code = $_POST['code'];
+            if($this->datawork->checkdata('coupons',['code'=> $code])){
+                $coupon = $this->db->get_where('coupons',['code'=> $code])->row();
+                $order = $this->db->get_where('orders',['user_id'=>$user->id,'ordered'=>false])->row();
+                $this->db->update('orders',['coupon'=>$coupon->id],['order_id'=>$order->order_id]);
+            }
+            else{
+                echo "<script>alert('not found')</script>";
+            }
+            redirect('user/cart');
+
+        }
+
     }
 }
 ?>

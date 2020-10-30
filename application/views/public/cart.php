@@ -39,16 +39,24 @@
             <ul class="list-group">
                 <li class="list-group-item list-group-item-action">Total Amount <span class="float-right font-weight-bolder">₹<?= $total;?>/-</span></li>
                 <li class="list-group-item list-group-item-action bg-success text-white">Saving Amount <span class="float-right font-weight-bolder">₹<?= $price - $total;?>/-</span></li>
-            </ul>
+           <?php if(!empty($order)):?>
+               <li class="list-group-item list-group-item-action bg-primary text-white">Coupon Discount  <span class="float-right font-weight-bolder">₹<?= $order[0]->amount;?>/-</span></li>
+           <?php endif;?></ul>
 
-            <form action="" class="mt-4">
+            <form action="<?= base_url('user/addCoupon');?>" class="mt-4" method="post">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Enter Code">
-                <span class="input-group-append">
-                    <input type="submit" class="btn btn-danger">
-                </span>
+                    <input type="text" class="form-control" name="code" placeholder="Enter Code">
+                    <span class="input-group-append">
+                        <input type="submit" class="btn btn-danger">
+                    </span>
                 </div>
             </form>
+            <?php if(!empty($order)):?>
+           
+            <h6 class="mt-3"><a href="">X</a> <strong><?= $order[0]->code;?></strong> Applied</h6>
+            <?php endif;?>
+            
+
         </div>
     </div>
 </div>
