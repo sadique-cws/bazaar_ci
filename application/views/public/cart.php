@@ -5,6 +5,10 @@
         <?php 
         $total = 0;
         $price = 0;
+
+        if($order[0]->coupon != null){
+            $total -=  $order[0]->amount;
+        }
         foreach($orderitem as $oi): ?>
             <div class="card mb-2">
             <div class="row">
@@ -16,17 +20,17 @@
                         <?= $oi->title;?>
 
                         <div class="div">
-                            <a href="" class="btn btn-danger">-</a>
+                            <a href="<?= base_url('user/removecart/'. $oi->id);?>" class="btn btn-danger"><i class="fas fa-minus"></i></a>
                             <span><?= $oi->qty;?></span>
-                            <a href="<?= base_url('user/addToCart/'. $oi->id);?>" class="btn btn-success">+</a>
+                            <a href="<?= base_url('user/addToCart/'. $oi->id);?>" class="btn btn-success"><i class="fas fa-plus"></i></a>
                         </div>
                     </div>
                 </div>
-                <div class="col">
-                    <a href="" class="text-muted text-decoration-none my-auto small">Remove</a>
+                <div class="col mt-4">
+                    <a href="<?= base_url('user/removeitem/'.$oi->id);?>" class="text-muted text-decoration-none my-auto small"> <i class="fas fa-trash"></i> Remove</a>
                 </div>
-                <div class="col">
-                    <h2 class="font-weight-bold">₹<?= $amount = $oi->discount_price * $oi->qty; $total+=$amount;?>/-</h2>
+                <div class="col mt-3">
+                    <h2 class=" h4 font-weight-bold">₹<?= $amount = $oi->discount_price * $oi->qty; $total+=$amount;?>/- <i class="fas fa-tag"></i></h2>
                     <h6 class="small text-muted"><del>₹<?= $p = $oi->price * $oi->qty; $price += $p?>/-</del></h6>
                 </div>
             </div>
@@ -39,7 +43,7 @@
             <ul class="list-group">
                 <li class="list-group-item list-group-item-action">Total Amount <span class="float-right font-weight-bolder">₹<?= $total;?>/-</span></li>
                 <li class="list-group-item list-group-item-action bg-success text-white">Saving Amount <span class="float-right font-weight-bolder">₹<?= $price - $total;?>/-</span></li>
-           <?php if(!empty($order)):?>
+           <?php if($order[0]->coupon!=null):?>
                <li class="list-group-item list-group-item-action bg-primary text-white">Coupon Discount  <span class="float-right font-weight-bolder">₹<?= $order[0]->amount;?>/-</span></li>
            <?php endif;?></ul>
 
@@ -47,14 +51,18 @@
                 <div class="input-group">
                     <input type="text" class="form-control" name="code" placeholder="Enter Code">
                     <span class="input-group-append">
-                        <input type="submit" class="btn btn-danger">
+                        <input type="submit" class="btn btn-danger" value="Apply">
                     </span>
                 </div>
             </form>
-            <?php if(!empty($order)):?>
+            <?php if($order[0]->coupon!=null):?>
            
-            <h6 class="mt-3"><a href="">X</a> <strong><?= $order[0]->code;?></strong> Applied</h6>
+            <h6 class="mt-3"><a href="<?= base_url('user/RemoveCoupon');?>">X</a> <strong><?= $order[0]->code;?></strong> Applied</h6>
             <?php endif;?>
+
+
+            <a href="" class="btn btn-warning mt-3 btn-block btn-lg">Checkout <i class="fas fa-arrow-right"></i></a>
+            <a href="" class="btn btn-info mt-3 btn-block btn-lg"><i class="fas fa-arrow-left"></i> Shopping More</a>
             
 
         </div>
