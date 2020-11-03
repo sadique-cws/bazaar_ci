@@ -145,5 +145,11 @@ class User extends CI_Controller{
 
 
     }
+    public function checkout(){
+        $this->load->view('public/header');
+        $this->load->view('public/checkout');
+        $this->load->view('public/footer');
+
+    }
 }
 ?>

@@ -61,7 +61,7 @@
             <?php endif;?>
 
 
-            <a href="" class="btn btn-warning mt-3 btn-block btn-lg">Checkout <i class="fas fa-arrow-right"></i></a>
+            <a href="<?= base_url('user/checkout');?>" class="btn btn-warning mt-3 btn-block btn-lg">Checkout <i class="fas fa-arrow-right"></i></a>
             <a href="" class="btn btn-info mt-3 btn-block btn-lg"><i class="fas fa-arrow-left"></i> Shopping More</a>
             
 
