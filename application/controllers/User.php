@@ -13,7 +13,8 @@ class User extends CI_Controller{
         public function count_cart(){
             $log = $this->session->userdata('admin');
             $user = $this->db->where('contact',$log)->get('account')->row();
-            if(!empty($user)){
+            $order = $this->datawork->calling("orders",['ordered'=>false,'user_id'=>$user->id]);
+            if(!empty($user) && !empty($order)){
             $order = $this->datawork->calling("orders",['ordered'=>false,'user_id'=>$user->id]);
             $oi = $this->db->where(['order_id'=>$order[0]->order_id,'ordered'=>false])->get('orderitem')->num_rows();
             if($oi > 0){
@@ -28,8 +29,23 @@ class User extends CI_Controller{
 
         $user = $this->db->where('contact',$log)->get('account')->row();
 
-        // $order = $this->db->get_where('orders',['user_id'=>$user->id,'ordered'=>false])->row();
         $order = $this->db->select('*')->from('orders')->join('coupons','orders.coupon=coupons.id','left')->where(['user_id'=>$user->id,'ordered'=>false])->get();
+        $order = $order->result();
+        
+        $data['orderitem'] = $this->db->select("*")->from('orderitem')->join('items','orderitem.item_id=items.id','left')->where(['user_id'=>$user->id,'ordered'=>false])->get()->result(); 
+        $data['order'] = $order;
+        
+        $this->load->view('public/header');
+        $this->load->view('public/cart',$data);
+        $this->load->view('public/footer');
+    }
+    public function myorder(){
+        $log = $this->session->userdata('admin');
+
+        $user = $this->db->where('contact',$log)->get('account')->row();
+
+        // $order = $this->db->get_where('orders',['user_id'=>$user->id,'ordered'=>false])->row();
+        $order = $this->db->select('*')->from('orders')->join('coupons','orders.coupon=coupons.id','left')->where(['user_id'=>$user->id,'ordered'=>true])->get();
         $order = $order->result();
         //select * from orders JOIN coupons ON orders.coupon = coupons.id WHERE user_id='' AND ordered=false
         
@@ -37,7 +53,7 @@ class User extends CI_Controller{
         $data['order'] = $order;
         
         $this->load->view('public/header');
-        $this->load->view('public/cart',$data);
+        $this->load->view('public/myorder',$data);
         $this->load->view('public/footer');
     }
 
@@ -146,10 +162,64 @@ class User extends CI_Controller{
 
     }
     public function checkout(){
-        $this->load->view('public/header');
-        $this->load->view('public/checkout');
-        $this->load->view('public/footer');
+        $log = $this->session->userdata('admin');
+        $user = $this->db->where('contact',$log)->get('account')->row();
+
+        $this->form_validation->set_rules('name','name','required');
+        $this->form_validation->set_rules('contact','contact','required');
+        $this->form_validation->set_rules('area','area','required');
+        $this->form_validation->set_rules('city','city','required');
+        $this->form_validation->set_rules('state','state','required');
+        $this->form_validation->set_rules('pin_code','pin_code','required');
+
+
+        if($this->form_validation->run()){
+                $data = [
+                    'name' => $_POST['name'],
+                    'contact' => $_POST['contact'],
+                    'area' => $_POST['area'],
+                    'city' => $_POST['city'],
+                    'state' => $_POST['state'],
+                    'pin_code' => $_POST['pin_code'],
+                ];
+
+                $insert = $this->db->insert('address',$data);
+                $last_id = $this->db->insert_id();
+
+                
+                $order = $this->db->update('orders',['address'=> $last_id],['user_id'=>$user->id,'ordered'=>false]);
+                redirect('user/makePayment');
+        
+
+        }
+        else{       
+            $this->load->view('public/header');
+            $this->load->view('public/checkout');
+            $this->load->view('public/footer');
+        }
 
     }
-}
+        public function  makePayment(){
+            $log = $this->session->userdata('admin');
+            $user = $this->db->where('contact',$log)->get('account')->row();
+
+            $this->form_validation->set_rules('mode','mode','required');
+
+
+            if($this->form_validation->run()){
+                        if($_POST['mode']==1){
+                            $order = $this->db->update('orders',['ordered'=> true],['user_id'=>$user->id,'ordered'=>false]);
+                            $orderitem = $this->db->update('orderitem',['ordered'=> true],['user_id'=>$user->id,'ordered'=>false]); 
+                            redirect('user/myorder');
+                        }
+            }
+            else{
+            $this->load->view('public/header');
+            $this->load->view('public/payment');
+            $this->load->view('public/footer');
+        
+        }
+        }
+    }
+
 ?>

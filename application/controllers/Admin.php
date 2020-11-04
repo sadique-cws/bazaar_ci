@@ -11,7 +11,7 @@ class Admin extends CI_Controller{
     public function index(){
         // $this->data['product'] = $this->datawork->calling("items");
         $this->load->view('admin/header');
-        $this->load->view('admin/dasboard',$this->data);
+        $this->load->view('admin/dashboard',$this->data);
         $this->load->view('admin/footer');
     }
 

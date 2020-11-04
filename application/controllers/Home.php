@@ -11,7 +11,8 @@ class Home extends CI_Controller{
     public function count_cart(){
         $log = $this->session->userdata('admin');
         $user = $this->db->where('contact',$log)->get('account')->row();
-        if(!empty($user)){
+        $order = $this->datawork->calling("orders",['ordered'=>false,'user_id'=>$user->id]);
+        if(!empty($user) && !empty($order)){
         $order = $this->datawork->calling("orders",['ordered'=>false,'user_id'=>$user->id]);
         $oi = $this->db->where(['order_id'=>$order[0]->order_id,'ordered'=>false])->get('orderitem')->num_rows();
         if($oi > 0){

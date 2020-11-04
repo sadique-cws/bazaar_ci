@@ -5,7 +5,7 @@
             <div class="card">
                 <div class="card-header">Fill your Address Details</div>
                 <div class="card-body">
-                    <form action="" method="post">
+                    <form action="<?= base_url('user/checkout');?>" method="post">
                         <div class="form-group">
                             <label for="">Name</label>
                             <input type="text" name="name" class="form-control">
