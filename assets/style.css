@@ -1,0 +1,16 @@
+.bg-theme{
+    background-color: #e84118;
+}
+.text-theme{
+    color: #e84118;
+}
+::-webkit-scrollbar{
+    width: 8px;
+}
+::-webkit-scrollbar-track{
+    background-color: #eee;
+}
+::-webkit-scrollbar-thumb{
+    background-color: #e84118;
+    border-radius: 5px;
+}

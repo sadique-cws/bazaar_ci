@@ -7,15 +7,20 @@
         
             <div class="row">
             <?php foreach($product as $item):?>
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                     <div class="card border-0">
                         <a href="<?= base_url('home/product/'.$item->id);?>" class="stretched-link">
-                            <img src="<?= base_url('assets/'.$item->image);?>" class="w-100 border border-muted" alt="">
+                            <img src="<?= base_url('assets/'.$item->image);?>" class="w-100 border border-muted" style="object-fit:cover;height:150px;" alt="">
                         </a>
-                        <div class="card-body">
-                            <h2 class="lead"><?= $item->title;?></h2>
-                            <p class="small"><?= $item->category;?></p>
-                            <h2>Rs. <?= $item->discount_price;?> <small><del><?= $item->price;?>/-</del></small></h2>
+                        <div class="card-body pt-1">
+                         <h2 class="h6 mb-1 text-capitalize font-weight-bold text-theme text-truncate"><?= $item->title;?></h2>
+                            <p class="small m-0 text-muted"><?= $item->cat_title;?></p>
+                            <h2 class="h4 d-inline"> 
+                                <span class="font-weight-bolder">₹<?= $item->discount_price;?> </span>
+                            
+                        </h2>
+                        <small class="small text-muted"><del>₹<?= $item->price;?>/-</del></small>
+                           
                         </div>
                     </div>
                 </div>

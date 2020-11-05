@@ -8,17 +8,19 @@ $ci = &get_instance();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bazaar</title>
+    <link rel="stylesheet" href="<?= base_url('assets/style.css');?>">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-theme fixed-top">
   <div class="container">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
     <a class="navbar-brand " href="#">
-        <img src="<?= base_url('assets/logo.png');?>" class="w-100">
+        <!-- <img src=//base_url('assets/logo.png');?>" class="w-100"> -->
+        Bazaar
     </a>
 
     <form class=" mx-auto">
@@ -41,12 +43,30 @@ $ci = &get_instance();
       </li>
       <?php if($this->session->userdata('admin')):?>
       <li class="nav-item  ml-2">
-        <a class="btn btn-danger" href="<?= base_url('auth/logout');?>" tabindex="-1" aria-disabled="true"><i class="fas fa-power-off"></i></a>
-      </li>
+        <div class="dropdown">
+            <button type="button" data-toggle="dropdown" class="nav-link border-0 bg-theme dropdown-toggle"><?= $_SESSION['admin'];?></button>
+            <div class="dropdown-menu">
+              <a href="<?= base_url('auth/signup');?>" class="dropdown-item">My Profile</a>
+              <a href="<?= base_url('auth/signup');?>" class="dropdown-item">My Carts</a>
+              <a href="<?= base_url('auth/signup');?>" class="dropdown-item">My Orders</a>
+              <a href="<?= base_url('auth/signup');?>" class="dropdown-item">My Return</a>
+              <a href="<?= base_url('auth/logout');?>" class="dropdown-item"> <i class="fas fa-power-off"></i> Logout </a>
+             
+            </div>
+          </div>
+       </li>
       <?php else: ?>
         <li class="nav-item">
-          <a class="btn btn-danger" href="<?= base_url('auth/login');?>" tabindex="-1" aria-disabled="true">Login</a>
-        </li>
+          <div class="dropdown">
+            <button type="button" data-toggle="dropdown" class="nav-link border-0 bg-theme dropdown-toggle">Account</button>
+            <div class="dropdown-menu">
+              <a href="<?= base_url('auth/login');?>" class="dropdown-item"> <i class="fas fa-user"></i> Login</a>
+              <a href="<?= base_url('auth/signup');?>" class="dropdown-item">Create an Account</a>
+              <div class="dropdown-divider"></div>
+              <a href="" class="dropdown-item" disabled>Help</a>
+            </div>
+          </div>
+       </li>
         
       <?php endif;?>
     </ul>

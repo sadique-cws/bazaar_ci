@@ -1,11 +1,10 @@
 <div class="container mt-5">
     <div class="row">
-
+    <?php     if(!empty($order)): ?>
         <div class="col-lg-9">
         <?php 
         $total = 0;
         $price = 0;
-
         if($order[0]->coupon != null){
             $total -=  $order[0]->amount;
         }
@@ -36,7 +35,7 @@
             </div>
                
             </div>
-        <?php endforeach;?>
+        <?php endforeach; ?>
         </div>
 
         <div class="col">
@@ -66,5 +65,14 @@
             
 
         </div>
+
+            <?php else: ?>
+                <div class="col-lg-12">
+                    <div class="alert alert-danger">
+                        <h2 class="alert-heading">Cart is Empty</h2>
+                        <p class="lead">your cart is empty please go back and start shopping <a href="<?= base_url('home/index');?>" class="alert-link">Click Here</a></p>
+                    </div>
+                </div>
+        <?php endif;?>
     </div>
 </div>

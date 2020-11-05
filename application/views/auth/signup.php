@@ -1,3 +1,7 @@
+<div class="bg-dark text-white w-100 px-5 py-3">
+        <h2 class="h5">Home/</h2>
+        <h4>Create An Account</h4>
+</div>
 <div class="container mt-5">
     <div class="row">
         <div class="col-lg-4 mx-auto">

@@ -1,3 +1,8 @@
+<div class="bg-dark text-white w-100 px-5 py-3">
+        <h2 class="h5">Home/</h2>
+        <h4>Login Here</h4>
+</div>
+
 <div class="container mt-5">
     <div class="row">
         <div class="col-lg-4 mx-auto">
@@ -16,7 +21,7 @@
                     </div>
 
                     <div class="form-group">
-                        <input type="submit" class="btn btn-success" name="send">
+                        <input type="submit" class="btn btn-success float-right" value="Login" name="send">
                     </div>
 
                     <?= form_close();?>
