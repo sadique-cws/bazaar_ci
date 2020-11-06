@@ -1,7 +1,25 @@
 <div class="container mt-5">
     <div class="row">
-
         <div class="col-lg-9">
+            <?php if(!empty($addresses)): ?>
+
+                <form action="<?= base_url('user/exist_address');?>" method="post">
+                <div class="form-group">
+                    <select name="address_id" id="" class="form-control" onchange="this.form.submit();">
+                            <option value="" disabled selected>Choose your address</option>
+                            <?php
+                            
+                            foreach($addresses as $ad): ?>
+
+                                    <option value="<?= $ad->id;?>"><?= $ad->name . " (" . $ad->contact . ")" . " -- ". $ad->area . ", " . $ad->city ." (". $ad->state . ")" . " - " . $ad->pin_code;?> </option>
+                            <?php endforeach;?>
+                    </select>
+                </div>
+            </form>
+
+
+
+            <?php endif; ?>
             <div class="card">
                 <div class="card-header">Fill your Address Details</div>
                 <div class="card-body">

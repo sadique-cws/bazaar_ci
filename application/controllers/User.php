@@ -49,7 +49,7 @@ class User extends CI_Controller{
         $order = $order->result();
         //select * from orders JOIN coupons ON orders.coupon = coupons.id WHERE user_id='' AND ordered=false
         
-        $data['orderitem'] = $this->db->select("*")->from('orderitem')->join('items','orderitem.item_id=items.id','left')->get()->result(); 
+        $data['orderitem'] = $this->db->select("*")->from('orderitem')->join('items','orderitem.item_id=items.id','left')->where(['user_id'=>$user->id,'ordered'=>true])->get()->result(); 
         $data['order'] = $order;
         
         $this->load->view('public/header');
@@ -181,6 +181,7 @@ class User extends CI_Controller{
                     'city' => $_POST['city'],
                     'state' => $_POST['state'],
                     'pin_code' => $_POST['pin_code'],
+                    'user_id' => $user->id
                 ];
 
                 $insert = $this->db->insert('address',$data);
@@ -193,16 +194,35 @@ class User extends CI_Controller{
 
         }
         else{       
+            $data['addresses'] = $this->db->where("user_id",$user->id)->get('address')->result();
             $this->load->view('public/header');
-            $this->load->view('public/checkout');
+            $this->load->view('public/checkout',$data);
             $this->load->view('public/footer');
         }
 
     }
+
+    public function exist_address(){
+        $log = $this->session->userdata('admin');
+        $user = $this->db->where('contact',$log)->get('account')->row();
+
+        $this->form_validation->set_rules('address_id','address','required');
+
+        if($this->form_validation->run()){
+
+            $last_id = $_POST['address_id'];
+            $order = $this->db->update('orders',['address'=> $last_id],['user_id'=>$user->id,'ordered'=>false]);
+            redirect('user/makePayment');
+        }
+        else{
+            redirect('user/checkout');
+        }
+       
+    }
         public function  makePayment(){
             $log = $this->session->userdata('admin');
             $user = $this->db->where('contact',$log)->get('account')->row();
-
+            $this->msg91->send($user->contact," you order is placed successfully");
             $this->form_validation->set_rules('mode','mode','required');
 
 

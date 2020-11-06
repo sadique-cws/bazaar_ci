@@ -7,7 +7,7 @@
         <?php 
         $total = 0;
         $price = 0;
-
+        if(!empty($order)):
         if($order[0]->coupon != null){
             $total -=  $order[0]->amount;
         }
@@ -34,7 +34,7 @@
             </div>
                
             </div>
-        <?php endforeach;?>
+        <?php endforeach; else: echo "no more orders"; endif;?>
         </div>
 
      </div>
