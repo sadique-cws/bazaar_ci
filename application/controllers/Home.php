@@ -24,6 +24,32 @@ class Home extends CI_Controller{
         return 0;
     }
 
+    public function send_mail(){
+            $config = Array( 
+            'protocol' => 'smtp', 
+            'smtp_host' => 'mail.codewithsadiq.com', 
+            'smtp_port' => 587, 
+            'mailtype' => 'html',
+            'smtp_user' => 'sadique@codewithsadiq.com', 
+            'smtp_pass' => 'n.X,#BVcSJXV'
+        ); 
+
+        $this->load->library('email',$config);
+
+
+        $this->email->to('kumaralok9038@gmail.com');
+        $this->email->from('sadique@codewithsadiq.com',"sadique hussain");
+        $this->email->subject("testing");
+        $this->email->message("<h1>hello Alok mai html based mail bej raha hu umeed hai tum sab khus hoge... </h1>");
+
+        if($this->email->send()){
+            echo "send";
+        }
+        else{
+            echo "else";
+        }
+     }
+
     public function commanView($data){
         $this->load->view('public/header');
         $this->load->view('public/home',$data);
@@ -48,7 +74,5 @@ class Home extends CI_Controller{
     public function search(){
         $this->commanView($this->data);
     }
-
-    
 }
 ?>

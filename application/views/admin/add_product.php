@@ -44,14 +44,14 @@
                             <label for="">category</label>
                             <select name="category" class="form-control">
                             <?php foreach($category as $cat):?> 
-                                <option value="<?= $cat->id;?>"><?= $cat->title;?></option>
+                                <option value="<?= $cat->cat_id;?>"><?= $cat->cat_title;?></option>
                             <?php endforeach; ?>
                             </select>
                             <?= form_error('category');?>
                         </div>
                         <div class="form-group">
                             <label for="">image</label>
-                            <input type="file" name="image" class="form-control">
+                            <input type="file" name="image[]" class="form-control" multiple>
                             <?= form_error('image');?>
                         </div>
                         <div class="form-group">

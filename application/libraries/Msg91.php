@@ -12,12 +12,7 @@ class Msg91 {
         $this->senderID = "CWSTXT";
 	}
 
-    /**
-     * This function helps to check the balance using the authentication key provided by MSG91.com
-     * Function: checkSMSBalance()
-     * Author: Anbuselvan Rocky
-     */
-    
+   
     public function checkSMSBalance()
     {
         

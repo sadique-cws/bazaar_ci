@@ -27,7 +27,31 @@ class Admin extends CI_Controller{
         $this->load->view('admin/footer');
     }
 
+
+    // private function uploadImage($image){
+    //     $config['upload_path']          = './assets/';
+    //     $config['allowed_types']        = 'gif|jpg|png';
+
+    //     $this->load->library("upload",$config);
+
+    //     if(!$this->upload->do_upload()){
+    //         $this->data['error'] = $this->upload->display_errors();
+    //         print_r($this->data['error']);
+    //         return false;
+    //     }
+    //     else{
+    //         $data = [
+    //             'img_name' => $image,
+    //         ];
+
+    //         $this->db->insert("photos",$data);
+    //         return true;
+    //     }
+    // }
+
+
     public function addProduct(){
+
         $this->form_validation->set_rules("title",'title',"required");
         $this->form_validation->set_rules("price",'price',"required");
         $this->form_validation->set_rules("discount_price",'discount_price',"required");
@@ -39,29 +63,34 @@ class Admin extends CI_Controller{
 
         if($this->form_validation->run()){
 
-            $config['upload_path']          = './assets/';
-            $config['allowed_types']        = 'gif|jpg|png';
+            $dataInfo = array();
+            $files = $_FILES;
+            $cpt = count($_FILES['image']['name']);
+            
+            for($i=0; $i<$cpt; $i++)
+            {           
+                $_FILES['image']['name']= $files['image']['name'][$i];
+               
+                $this->upload->initialize($this->config_image());
+                $this->upload->do_upload();
+                print_r($this->upload->display_errors());
+                // print_r($this->upload->do_upload());
+                $dataInfo[] = $this->upload->data();
+                
+                for($x=0;$x<count($dataInfo);$x++){
+                    // print_r($dataInfo);
+                    $data = [
+                        'img_name' => $dataInfo[$x]['file_name'],
+                    ];
+                    
+                    $this->db->insert("photos",$data);
+                }
 
-            $this->load->library("upload",$config);
-
-            if(!$this->upload->do_upload("image")){
-                $this->data['error '] = $this->upload->display_errors();
             }
-            else{
-                $data = [
-                    'title' => $_POST['title'],
-                    'price' => $_POST['price'],
-                    'discount_price' => $_POST['discount_price'],
-                    'brand' => $_POST['brand'],
-                    'model' => $_POST['model'],
-                    'category' => $_POST['category'],
-                    'image' => $_FILES['image']['name'],
-                    'description' => $_POST['description']
-                ];
 
-                $this->db->insert("items",$data);
-                redirect('admin/index');
-            }
+
+            
+                // redirect('admin/index');
         }
         else{
             $this->load->view('admin/header');
@@ -70,6 +99,12 @@ class Admin extends CI_Controller{
         }
     }
     
+    private function config_image(){
+        $config = array();
+        $config['upload_path']          = './assets/';
+        $config['allowed_types']        = 'gif|jpg|png';
+        return $config;
+    }
 
     
 }
